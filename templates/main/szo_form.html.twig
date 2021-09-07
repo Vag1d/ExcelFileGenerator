@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+{% block title %}Добавить объект{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('szo_form') }}
+{% endblock %}
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="row">
+        <div class="col-8">
+            <div class="form-group">
+                <label for="database_fullNameC30"><strong>Полное наименование СЗО</strong></label>
+                {{ form_widget(form.fullNameC30) }}
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <label for="database_shortName"><strong>Сокращенное наименование СЗО</strong></label>
+                {{ form_widget(form.shortName) }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <label for="database_FIO"><strong>ФИО</strong></label>
+                {{ form_widget(form.FIO) }}
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <label for="database_fioGenitive"><strong>ФИО (в род. падеже)</strong></label>
+                {{ form_widget(form.fioGenitive) }}
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="form-group">
+                <label for="database_spot"><strong>Должность</strong></label>
+                {{ form_widget(form.spot) }}
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="form-group">
+                <label for="database_spotGenitive"><strong>Должность (в род. падеже)</strong></label>
+                {{ form_widget(form.spot_genitive) }}
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="form-group">
+                <label for="database_numGk"><strong>Номер ГК</strong></label>
+                {{ form_widget(form.numGk) }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <label for="database_adres"><strong>Адрес</strong></label>
+                {{ form_widget(form.adres) }}
+            </div>
+        </div>
+        <div class="col-1">
+            <div class="form-group">
+                <label for="database_protocol"><strong>Протокол</strong></label>
+                {{ form_widget(form.protocol) }}
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="form-group">
+                <label for="database_ystaw"><strong>Устав, приказ</strong></label>
+                {{ form_widget(form.ystaw) }}
+            </div>
+        </div>
+        <div class="col-3" style="{% if doc.protocol != protocol_fp_id %}display: none;{% endif %}">
+            <div class="form-group">
+                <label for="database_mainFIOFP"><strong>ФИО заведующей ФП</strong></label>
+                {{ form_widget(form.mainFIOFP) }}
+            </div>
+        </div>
+        <div class="col-3" style="{% if doc.protocol != protocol_fp_id %}display: none;{% endif %}">
+            <div class="form-group">
+                <label for="database_spotNameFP"><strong>Должность и наименование ФП</strong></label>
+                {{ form_widget(form.spotNameFP) }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4" style="{% if doc.protocol != protocol_fp_id %}display: none;{% endif %}">
+            <div class="form-group">
+                <label for="database_template"><strong>Акт оказания услуг</strong></label>
+                {{ form_widget(form.template) }}
+            </div>
+        </div>
+    </div>
+    {% if doc.id is not null %}
+        <a href="{{ path('show_szo', {id: doc.id}) }}" class="btn btn-info">Назад</a>
+    {% endif %}
+    <button type="submit" class="btn btn-primary">
+        {% if doc.id is not null %}
+            Сохранить
+        {% else %}
+            Создать
+        {% endif %}
+    </button>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{% endblock %}</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+    <header>
+        <nav class="navbar navbar-expand navbar-light bg-secondary-orange mb-3">
+            <a class="navbar-brand" href="{{ path('home') }}">xDocSZO</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключить меню">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item {% if app.request.get('_route') in ['home', 'show_szo', 'edit_szo'] %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('home') }}">Объекты СЗО</a>
+                    </li>
+                    <li class="nav-item {% if app.request.get('_route') in ['add_szo'] %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('add_szo') }}">Добавить объект</a>
+                    </li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item {% if app.request.get('_route') starts with 'admin' %}active{% endif %}">
+                            <a class="nav-link" href="{{ path('admin_home') }}">Пользователи</a>
+{#                            <div class="dropdown-menu" aria-labelledby="adminMenuDropdown">#}
+{#                                <a class="dropdown-item" href="{{ path('admin_home') }}">Пользователи</a>#}
+{#                            </div>#}
+                        </li>
+                    {% endif %}
+                </ul>
+                <div class="row">
+                    <div class="col">
+                        <a href="{{ path('profile') }}" class="text-dark"><i class="fa fa-user"></i> {{ app.user.username }}</a>
+                        <a href="{{ path('app_logout') }}" class="btn btn-outline-secondary">Выход</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container-fluid">
+            {% block body %}{% endblock %}
+        </div>
+    </main>
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+    </body>
+</html>

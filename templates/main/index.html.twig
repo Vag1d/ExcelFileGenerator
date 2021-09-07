@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+{% block title %}Объекты СЗО{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-6 d-flex justify-content-start">
+            <div class="row w-100">
+                <div class="col">
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <input type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder="Введите наименование объекта СЗО..." name="search_query" value="{{ searchQuery }}" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary mb-2">Поиск</button>
+                                <a href="{{ path('home') }}" class="btn btn-secondary mb-2">Сброс</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% if docList|length > 10 %}
+            <div class="col d-flex justify-content-end">
+                <div class="pagerfanta">
+                    {{ pagerfanta(docList, 'twitter_bootstrap4', {'prev_message': '<i class="fas fa-chevron-left"></i> Назад', 'next_message': 'Вперед <i class="fas fa-chevron-right"></i>'}) }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">№</th>
+                        <th scope="col">Наименование</th>
+                        <th scope="col">Дата</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for doc in docList %}
+                        <tr>
+                            <th scope="row">{{ doc.id }}</th>
+                            <td>{{ doc.fullNameC30 }}</td>
+                            <td>
+                                {{ doc.createdAt|date("d.m.Y H:i:s") }}
+                            </td>
+                            <td>
+                                <a href="{{ path('show_szo', {id: doc.id}) }}" class="btn btn-info" data-toggle="tooltip" title="Просмотр объекта"><i class="fas fa-id-card-alt"></i></a>
+                                <a href="{{ path('edit_szo', {id: doc.id}) }}" class="btn btn-primary" data-toggle="tooltip" title="Редактировать"><i class="fas fa-edit"></i></a>
+                                <a href="#" class="btn btn-danger" data-toggle="tooltip" title="Удалить" onclick="document.getElementById('delete_szo{{ doc.id }}').click(); return false;"><i class="fas fa-trash"></i></a>
+                                {% include 'main/_delete.html.twig' %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted"><em>Ничего не найдено</em></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

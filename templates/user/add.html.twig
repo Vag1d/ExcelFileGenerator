@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% block title %}Новый пользователь{% endblock %}
+
+{% block body %}
+    <main>
+        <h1>Создание нового пользователя</h1>
+        {% set admin_content %}
+
+            <div class="btn-group" role="group">
+                <a href="" class="btn btn-lg btn-secondary" title="Назад к списку пользователей" data-toggle="tooltip"><i class="fas fa-angle-left"></i></a>
+                <a href="#" onclick="document.getElementById('save').click(); return false;" class="btn btn-lg btn-primary" title="Сохранить" data-toggle="tooltip"><i class="fas fa-save"></i></a>
+            </div>
+        {% endset %}
+{#        <form name="user" method="post">#}
+
+{#            <div class="form-group row"><label class="col-form-label col-sm-2 required" for="user_username">Имя пользователя</label><div class="col-sm-10"><input type="text" id="user_username" name="user[username]" required="required" class="form-control"></div>#}
+{#            </div>#}
+{#            <div class="form-group row"><label class="col-form-label col-sm-2 required" for="user_password">Пароль</label><div class="col-sm-10"><input type="password" id="user_password" name="user[password]" required="required" aria-describedby="user_password_help" class="form-control"></div>#}
+{#            </div>#}
+{#            <div class="form-group row">#}
+{#                <label class="col-form-label col-sm-2">Привилегии и ограничения</label>#}
+{#                <div class="col-sm-6">#}
+{#                    <div id="user_roles_helper">#}
+{#                        <div class="custom-control custom-checkbox">#}
+{#                            <input class="custom-control-input" type="checkbox" value="ROLE_ADMIN" id="grouped_role1">#}
+{#                            <label class="custom-control-label" for="grouped_role1">#}
+{#                                Администратор#}
+{#                                <small class="form-text text-muted mt-0">Доступ к разделу приложения "Панель администратора". Управление настройками приложения, задач bitrix, управление пользователями и создание объявлений.</small>#}
+{#                            </label>#}
+{#                        </div>#}
+
+{#                </div>#}
+
+{#            </div>#}
+{#            </div>#}
+
+
+{#            <button class="btn btn-primary" id="save">Сохранить</button>#}
+{#        </form>#}
+{{ form_start(form) }}
+
+    </main>
+
+{% endblock %}

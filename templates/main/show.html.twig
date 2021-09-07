@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+{% block title %}Объект СЗО - {{ doc.fullNameC30 }}{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-8">
+            <div class="form-group">
+                <label for="fullNameSzo"><strong>Полное наименование СЗО</strong></label>
+                <input type="text" class="form-control" id="fullNameSzo" value="{{ doc.fullNameC30 }}" readonly>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <label for="shortName"><strong>Сокращенное наименование СЗО</strong></label>
+                <input type="text" class="form-control" id="shortName" value="{{ doc.shortName }}" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <label for="fio"><strong>ФИО</strong></label>
+                <input type="text" class="form-control" id="fio" value="{{ doc.fIO }}" readonly>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <label for="fioGenitive"><strong>ФИО (в род. падеже)</strong></label>
+                <input type="text" class="form-control" id="fioGenitive" value="{{ doc.fioGenitive }}" readonly>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="form-group">
+                <label for="spot"><strong>Должность</strong></label>
+                <input type="text" class="form-control" id="spot" value="{{ doc.spot }}" readonly>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="form-group">
+                <label for="spotGenitive"><strong>Должность (в род. падеже)</strong></label>
+                <input type="text" class="form-control" id="spotGenitive" value="{{ doc.spotGenitive }}" readonly>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="form-group">
+                <label for="numGk"><strong>Номер ГК</strong></label>
+                <input type="text" class="form-control" id="numGk" value="{{ doc.numGk }}" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <label for="address"><strong>Адрес</strong></label>
+                <input type="text" class="form-control" id="address" value="{{ doc.adres }}" readonly>
+            </div>
+        </div>
+        <div class="col-1">
+            <div class="form-group">
+                <label for="protocol"><strong>Протокол</strong></label>
+                <input type="text" class="form-control" id="protocol" value="{{ protocols[doc.protocol] }}" readonly>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="form-group">
+                <label for="ystaw"><strong>Устав, приказ</strong></label>
+                <input type="text" class="form-control" id="ystaw" value="{{ doc.ystaw }}" readonly>
+            </div>
+        </div>
+        {% if doc.protocol == protocol_fp_id %}
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="mainFIOFP"><strong>ФИО заведующей ФП</strong></label>
+                    <input type="text" class="form-control" id="mainFIOFP" value="{{ doc.mainFIOFP }}" readonly>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="spotNameFP"><strong>Должность и наименование ФП</strong></label>
+                    <input type="text" class="form-control" id="spotNameFP" value="{{ doc.spotNameFP }}" readonly>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        {% if doc.protocol == protocol_fp_id %}
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="template"><strong>Акт оказания услуг</strong></label>
+                    <input type="text" class="form-control" id="template" value="{{ templates[doc.template] }}" readonly>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        {% if doc.updatedAt is not null %}
+            <div class="col d-flex justify-content-start">
+                <em>Последнее изменение: {{ doc.updatedAt|date("d.m.Y H:i:s") }}</em>
+            </div>
+        {% endif %}
+        <div class="col d-flex justify-content-end">
+            <a href="{{ path('edit_szo', {id: doc.id}) }}" class="btn btn-primary mr-2"><i class="fas fa-edit"></i> Редактировать</a>
+            <a href="#" class="btn btn-danger" onclick="document.getElementById('delete_szo{{ doc.id }}').click(); return false;"><i class="fas fa-trash"></i> Удалить</a>
+            {% include 'main/_delete.html.twig' %}
+        </div>
+    </div>
+    <hr>
+    <h3>Файлы <small><a href="{{ path('szo_act_download', {id: doc.id, 'act': "all"}) }}" class="text-success">Скачать все</a></small></h3>
+    <div class="row">
+        {% for act, metadata in acts_list %}
+            {% if (metadata['protocol'] is defined and metadata['protocol'] == doc.protocol and metadata['template'] is not defined) or (metadata['template'] is defined and metadata['template'] == doc.template and metadata['protocol'] == doc.protocol) or (metadata['protocol'] is not defined and metadata['template'] is not defined) %}
+                <div class="col-2">
+                    <div class="bg-light p-2 d-flex justify-content-between">
+                        <strong>{{ metadata['title'] }}</strong>
+                        <a href="{{ path('szo_act_download', {id: doc.id, 'act': act}) }}" class="text-success"><i class="fas fa-file-download"></i></a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

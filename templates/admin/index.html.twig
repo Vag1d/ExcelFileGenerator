@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% block title %}Пользователи{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col d-flex justify-content-start mb-3">
+            <a href="{{ path('admin_user_create') }}" class="btn btn-primary"><i class="fas fa-user-plus"></i> Создать пользователя</a>
+        </div>
+        {% if users|length > 20 %}
+            <div class="col d-flex justify-content-end">
+                <div class="pagerfanta">
+                    {{ pagerfanta(users, 'twitter_bootstrap4', {'prev_message': '<i class="fas fa-chevron-left"></i> Назад', 'next_message': 'Вперед <i class="fas fa-chevron-right"></i>'}) }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        {% for user in users %}
+            <div class="col-3 mb-2">
+                <div class="card">
+                    <h5 class="card-header"><i class="fas fa-user"></i> {{ user.data.username }}</h5>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <em>{{ user.data.fio }}</em><br>
+                            {{ user.data.roles|map(role => roles[role]|default(role))|join(', ') }}<br>
+                            {{ user.docsCount }} {{ num2word(user.docsCount, ['объект', 'объекта', 'объектов']) }}
+                        </p>
+                        <a href="{{ path('user_edit', {'id': user.data.id}) }}" class="btn btn-primary"><i class="fas fa-user-edit"></i> Редактировать</a>
+                        {% if self_id != user.data.id%}
+                            <a href="#" class="btn btn-danger" data-toggle="tooltip" title="Удалить" onclick="document.getElementById('delete_user{{ user.data.id }}').click(); return false;"><i class="fas fa-user-minus"></i> Удалить</a>
+                            <form method="post" action="{{ path('user_delete', {'id': user.data.id}) }}" onsubmit="return confirm('Вы уверены?');" style="display: none;">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.data.id) }}">
+                                <button class="btn btn-danger" id="delete_user{{ user.data.id }}"></button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
